@@ -247,17 +247,17 @@ xlEXPORT int xlLoadFile(char *fname)
 }
 
 /* xlLoadOpen - open a file for loading */
-xlEXPORT FILE *xlLoadOpen(char *name,char *mode,char *pathsym,char *rpath)
+xlEXPORT FILE *xlLoadOpen(char *name, char *mode, char *pathsym, char *rpath)
 {
-    xlValue dir,fullpath,path;
-    xlFIXTYPE dirlen,namelen;
-    char *pathstr;
-    FILE *fp;
+    xlValue dir, fullpath, path;
+    xlFIXTYPE dirlen, namelen;
+    char *pathstr = NULL;
+    FILE *fp = NULL;
 
     /* first try just opening the file with no additional path information */
-    if ((fp = xlosOpenText(name,mode)) != NULL) {
+    if ((fp = xlosOpenText(name, mode)) != NULL) {
         if (rpath)
-            strcpy(rpath,name);
+            strcpy(rpath, name);
         return fp;
     }
 

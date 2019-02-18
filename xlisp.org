@@ -1,7 +1,76 @@
-#+TITLE: XLISP: An Object-Oriented Lisp\\ Version 3.0
-#+DATE: January 28, 1997
-#+AUTHOR: David Michael Betz\\ Mods by Brian Beckman 2013-2014
+#+TITLE: XLISP: An Object-Oriented Lisp @@latex:\\@@ Version 3.0
+#+DATE: January 28, 1997 and February 18, 2019
+#+AUTHOR: David Michael Betz @@latex:\\@@ Mods by Brian Beckman 2013-2019
 #+STYLE: <link rel="stylesheet" type="text/css" href="styles/default.css" />
+
+# #+OPTIONS: author:nil date:nil
+#+OPTIONS: ':t *:t -:t ::t <:t H:3 \n:nil ^:t arch:headline author:t c:nil
+#+OPTIONS: num:t p:nil pri:nil stat:t tags:t tasks:t tex:t timestamp:t toc:t
+#+OPTIONS: todo:t |:t
+# #+OPTIONS: toc:nil
+#+OPTIONS: creator:comment d:(not "LOGBOOK") date:t e:t email:nil f:t inline:t
+#+CREATOR:
+
+#+SELECT_TAGS: export
+
+#+STARTUP: indent
+
+#+LaTeX_CLASS_OPTIONS: [12pt,oneside,x11names]
+# #+LaTeX_HEADER: \usepackage{titletoc} % must be before hyperref
+#+LaTeX_HEADER: \usepackage{hyperref}
+#+LaTeX_HEADER: \usepackage{url}
+#+LaTeX_HEADER: \usepackage[top=0.90in,bottom=0.55in,left=1in,right=1in,includefoot]{geometry}
+#+LaTeX_HEADER: \usepackage{palatino}
+#+LaTeX_HEADER: \usepackage{siunitx}
+#+LaTeX_HEADER: \usepackage{braket}
+#+LaTeX_HEADER: \usepackage[euler-digits,euler-hat-accent]{eulervm}
+
+#+LATEX_HEADER: \usepackage{fancyhdr}
+#+LATEX_HEADER: \pagestyle{fancyplain}
+#+LATEX_HEADER: \lhead{}
+#+LATEX_HEADER: \chead{XLisp 3.0, 2019}
+#+LATEX_HEADER: \rhead{}
+#+LATEX_HEADER: \lfoot{}
+#+LATEX_HEADER: \cfoot{\thepage}
+#+LATEX_HEADER: \rfoot{}
+
+# #+LATEX_HEADER: \usepackage{lineno}
+# #+LATEX_HEADER: \linenumbers
+
+* COMMENT Preliminaries
+
+This section is just about setting up org-mode. It shouldn't export to the
+typeset PDF and HTML.
+
+#+BEGIN_SRC emacs-lisp :exports results :results none
+  (defun update-equation-tag ()
+    (interactive)
+    (save-excursion
+      (goto-char (point-min))
+      (let ((count 1))
+        (while (re-search-forward "\\tag{\\([0-9]+\\)}" nil t)
+          (replace-match (format "%d" count) nil nil nil 1)
+          (setq count (1+ count))))))
+  (update-equation-tag)
+  (setq org-confirm-babel-evaluate nil)
+  (org-babel-map-src-blocks nil (org-babel-remove-result))
+  ;; (slime)
+#+END_SRC
+
+#+BEGIN_SRC python :results output
+import time
+import sys
+print(f"Hello, today's date is {time.ctime()}")
+print(f'Two plus two is {2 + 2}')
+print(f"Python's version info: {sys.version}")
+#+END_SRC
+
+#+RESULTS:
+: Hello, today's date is Sun Feb 10 20:25:31 2019
+: Two plus two is 4
+: Python's version info: 3.6.7 (default, Oct 22 2018, 11:32:17)
+: [GCC 8.2.0]
+
 
 * License
 
@@ -76,7 +145,7 @@
 
   There are currently implementations of XLISP running on the IBM-PC and
   clones under MS-DOS, on the Macintosh and under OS/2.  It is
-  completely written in ANSI C and is easily extended with user written
+  completely written in ANSI C and is easily extended with user-written
   built-in functions and classes.  It is available in source form to
   non-commercial users.
 
@@ -92,46 +161,44 @@
   Language'' by R. Kent Dybvig and ``The Little Lisper'' by Daniel
   P. Friedman and Matthias Felleisen to be helpful.
 
+  Notes By Brian Beckman:
+
+  Please see the .sln file for Visual Studio 2017 and the ~CMakeLists.txt~ files
+  that produced it for a current build for Windows 10.
+
 * A Note from the Authors
 
-  [bbeckman 2013] I am resurrecting the venerable, old xlisp to put it
-  to work as a scripting language over native-code libraries.  XLisp was
-  a de-facto open-source, attribution-license project before open-source
-  and attribution-licensing were a clear idea in the software community.
-  I used it for several projects at Jet Propulsion Laboratory before I
-  went to Microsoft, where it was not considered useful.  Therefore, I
-  have not used this in production since 1990 or so, when it was
-  unabashedly xscheme.  The current version, 3.0, circa 1997, shows the
-  signs of vacillation between scheme and common lisp, and I will put in
-  some development work to move it away from common lisp.  The class of
-  lisp languages has come a long way since 1990, probably being best
-  represented by Clojure as of 2013.  Whereas implementing a native
-  Clojure is beyond the scope of my current work, my improvements to
-  xlisp 3.0 will move it either back toward scheme or forward toward
-  Clojure, as taste and time allow.  Meanwhile, here are the original
-  author's original remarks, circa 1997:
+  [bbeckman 2019] I am resurrecting the venerable, old xlisp to put it to work
+  as a scripting language over native-code libraries. XLisp was a de-facto
+  open-source, attribution-license project before open-source and
+  attribution-licensing were a clear idea in the software community. I used it
+  for several projects at Jet Propulsion Laboratory before I went to Microsoft,
+  where it was not considered useful. Therefore, I have not used this in
+  production since 1990 or so, when it was called xscheme. The current version,
+  3.0, circa 1997, shows vacillation between scheme; common lisp; and a custom,
+  message-passing style of object-oriented programming, presumably inspired by
+  Smalltalk. I may develop this language in a different direction, perhaps
+  toward Clojure. Meanwhile, here are David Betz's original remarks, circa 1997:
 
-  If you have any problems with XLISP, feel free to contact me for help
-  or advice.  Please remember that since XLISP is available in source
-  form in a high level language many users have been making versions
-  available on a variety of machines.  If you call to report a problem
-  with a specific version, I may not be able to help you if that version
-  runs on a machine I don't have access to.  Please have the version
-  number of XLISP that you are running readily accessible before calling
-  me.
+  If you have any problems with XLISP, feel free to contact me for help or
+  advice. Please remember that since XLISP is available in source form in a
+  high-level language, many users have been making versions available on a
+  variety of machines. If you call to report a problem with a specific version,
+  I may not be able to help you if that version runs on a machine I don't have
+  access to. Please have the version number of XLISP that you are running
+  readily accessible before calling me.
 
-  If you find a bug in XLISP, first try to fix the bug yourself using
-  the source code provided.  If you are successful in fixing the bug,
-  send the bug report along with the fix to me.  If you don't have
-  access to a C compiler or are unable to fix a bug, please send the bug
-  report to me and I'll try to fix it.
+  If you find a bug in XLISP, first try to fix the bug yourself using the source
+  code provided. If you are successful in fixing the bug, send the bug report
+  along with the fix to me. If you don't have access to a C compiler or are
+  unable to fix a bug, please send the bug report to me and I'll try to fix it.
 
-  Any suggestions for improvements will be welcomed.  Feel free to
-  extend the language in whatever way suits your needs.  However, PLEASE
-  DO NOT RELEASE ENHANCED VERSIONS WITHOUT CHECKING WITH ME FIRST!! I
-  would like to be the clearing house for new features added to XLISP.
-  If you want to add features for your own personal use, go ahead.  But,
-  if you want to distribute your enhanced version, contact me first.
+  Any suggestions for improvements will be welcomed. Feel free to extend the
+  language in whatever way suits your needs. However, PLEASE DO NOT RELEASE
+  ENHANCED VERSIONS WITHOUT CHECKING WITH ME FIRST!! I would like to be the
+  clearing house for new features added to XLISP. If you want to add features
+  for your own personal use, go ahead. But, if you want to distribute your
+  enhanced version, contact me first.
 
 * Core Language Reference
 
@@ -151,27 +218,27 @@
 
 ** Built-In Variables
 
-*** *PACKAGE*
+*** \ast{}PACKAGE\ast{}
 
    Bound to the default package.
 
-*** *READTABLE*
+*** \ast{}READTABLE\ast{}
 
    Bound to the current read table.
 
-*** *ERROR-HANDLER*
+*** \ast{}ERROR-HANDLER\ast{}
 
    Bound to a function to handle errors.  The function should take two
    arguments, the function where the error occured and the environment
    at the time of the error.  It shouldn't return.
 
-*** *UNBOUND-HANDLER*
+*** \ast{}UNBOUND-HANDLER\ast{}
 
    Bound to a function to handle unbound symbol errors.  The function
    should take two arguments, the symbol that is unbound and a
    continuation to call after correcting the error.
 
-*** *LOAD-PATH*
+*** \ast{}LOAD-PATH\ast{}
 
    Bound to the path used by the LOAD function.  This is initialized to
    the contents of the XLISP environment variable or, if that is not
@@ -181,41 +248,41 @@
    with an appropriate directory terminator (the backslash under MS-DOS,
    the slash under UNIX or a colon on the Macintosh.
 
-*** *STANDARD-INPUT*
+*** \ast{}STANDARD-INPUT\ast{}
 
    Bound to the standard input port.
 
-*** *STANDARD-OUTPUT*
+*** \ast{}STANDARD-OUTPUT\ast{}
 
    Bound to the standard output port.
 
-*** *ERROR-OUTPUT*
+*** \ast{}ERROR-OUTPUT\ast{}
 
    Bound to the error output port.
 
-*** *FIXNUM-FORMAT*
+*** \ast{}FIXNUM-FORMAT\ast{}
 
    A printf style format string for printing fixed point numbers.
    FIXNUMs are generally represented by long integers so this should
    usually be set to "%ld".
 
-*** *HEXNUM-FORMAT*
+*** \ast{}HEXNUM-FORMAT\ast{}
 
    A printf style format string for printing fixed point numbers in
    hexadecimal.  FIXNUMs are generally represented by long integers so
    this should usually be set to "%lx".
 
-*** *FLONUM-FORMAT*
+*** \ast{}FLONUM-FORMAT\ast{}
 
    A printf style format string for printing floating point numbers.
    This is usually set to "%.15g".
 
-*** *PRINT-CASE*
+*** \ast{}PRINT-CASE\ast{}
 
    Bound to a symbol that controls the case in which symbols are
    printed.  Can be set to UPCASE or DOWNCASE.
 
-*** *SOFTWARE-TYPE*
+*** \ast{}SOFTWARE-TYPE\ast{}
 
    Bound to a symbol that indicates the host software.  The following
    types are defined currently:
