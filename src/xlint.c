@@ -14,7 +14,7 @@
 xlErrorTarget *xlerrtarget = NULL;  /* error target */
 xlValue *xlcatch = NULL;            /* catch frame pointer */
 int xlTraceBytecodes = FALSE;       /* trace enable */
-xlEXPORT int xlArgC;                /* number of arguments remaining */
+xlEXPORT long long int xlArgC;                /* number of arguments remaining */
 xlEXPORT void (*xlNext)(void);      /* next function to call (xlApply or NULL) */
 
 /* external variables */
@@ -1205,7 +1205,7 @@ static void opGTR(void)
 /* opCATCH - handler for opcode CATCH */
 static void opCATCH(void)
 {
-    register unsigned int offset;
+    register unsigned long long int offset;
     
     /* get the target offset */
     offset = *pc++ << 8;

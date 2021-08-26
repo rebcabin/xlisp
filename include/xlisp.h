@@ -141,10 +141,10 @@ void free(void *);
 #define xlAFMT          "%x"
 #endif
 #ifndef xlOFFTYPE
-#define xlOFFTYPE       int
+#define xlOFFTYPE       long long int  // 2021, 64-bit x86
 #endif
 #ifndef xlFIXTYPE
-#define xlFIXTYPE       long
+#define xlFIXTYPE       long long int  // 2021, 64-bit x86
 typedef unsigned long   xlUFIXTYPE;
 #endif
 #ifndef xlICNV
@@ -695,7 +695,7 @@ xlEXPORT extern xlValue *xlStkBase;     /* base of value stack */
 xlEXPORT extern xlValue *xlStkTop;      /* top of value stack */
 xlEXPORT extern xlValue *xlSP;          /* value stack pointer */
 xlEXPORT extern xlValue *xlCSP;         /* control stack pointer */
-xlEXPORT extern int xlArgC;             /* number of arguments remaining */
+xlEXPORT extern long long int xlArgC;             /* number of arguments remaining */
 xlEXPORT extern void (*xlNext)(void);   /* pointer to the next function to call (xlApply) */
 xlEXPORT extern int xlDebugModeP;       /* true to turn off tail recursion */
 

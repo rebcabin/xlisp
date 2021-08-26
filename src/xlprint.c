@@ -484,7 +484,7 @@ static void putfree(xlValue fptr,xlValue val)
     xlPutStr(fptr,"#<Free #");
     sprintf(buf,xlAFMT,val);
     strcat(buf," was ");
-    typeid = (int)(long)xlCar(val);
+    typeid = (long long int)xlCar(val);
     if (typeid >= 0 && typeid <= xlMAXTYPEID)
         sprintf(&buf[strlen(buf)],"%s",typenames[typeid]);
     else
